@@ -8,13 +8,27 @@ import { Manifesto } from './components/Manifesto';
 const App: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   
-  // Update mouse position
+  // Update mouse/touch position
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePos({ x: e.clientX, y: e.clientY });
     };
+
+    const handleTouch = (e: TouchEvent) => {
+        if (e.touches.length > 0) {
+            setMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+        }
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouch, { passive: true });
+    window.addEventListener('touchstart', handleTouch, { passive: true });
+
+    return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('touchmove', handleTouch);
+        window.removeEventListener('touchstart', handleTouch);
+    };
   }, []);
 
   // Split Screen calculation
@@ -25,6 +39,9 @@ const App: React.FC = () => {
   const bgTextX = useTransform(scrollY, [0, 500], [0, -200]);
   const bgTextOpacity = useTransform(scrollY, [0, 500], [0.2, 0]);
   const bgTextScale = useTransform(scrollY, [0, 500], [1, 1.2]);
+  
+  // Fade out scroll indicator immediately upon scrolling
+  const scrollIndicatorOpacity = useTransform(scrollY, [0, 100], [1, 0]);
 
   const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 1000;
 
@@ -33,10 +50,10 @@ const App: React.FC = () => {
       <Cursor />
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero Section - Removed 'sticky top-0' to prevent element bleeding/persistence */}
       <section 
         ref={containerRef}
-        className="relative h-screen w-full overflow-hidden flex items-center justify-center sticky top-0"
+        className="relative h-screen w-full overflow-hidden flex items-center justify-center"
       >
         {/* Background Layers */}
         <div className="absolute inset-0 flex">
@@ -93,11 +110,14 @@ const App: React.FC = () => {
              </motion.div>
         </motion.div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 mix-blend-difference text-white">
+        {/* Scroll Indicator - Fades out on scroll */}
+        <motion.div 
+            style={{ opacity: scrollIndicatorOpacity }}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 mix-blend-difference text-white"
+        >
             <span className="font-mono text-[10px] tracking-widest uppercase animate-pulse">Scroll to Initiate</span>
             <div className="w-[1px] h-12 bg-white" />
-        </div>
+        </motion.div>
       </section>
 
       {/* Content Section */}
@@ -105,15 +125,10 @@ const App: React.FC = () => {
       
       {/* Footer */}
       <footer className="bg-ox-black text-ox-white py-12 px-6 border-t border-white/10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-center md:justify-start items-center gap-6">
             <div className="text-center md:text-left">
-                <h3 className="font-bold text-2xl tracking-tighter uppercase mb-2">Offline Xperience</h3>
+                <h3 className="font-bold text-2xl tracking-tighter uppercase mb-2">Offline Experience</h3>
                 <p className="font-mono text-xs text-gray-500">© 2025 ALL RIGHTS RESERVED. // NO SIGNAL DETECTED.</p>
-            </div>
-            <div className="flex gap-6 font-mono text-xs uppercase">
-                <a href="#" className="hover:text-ox-red transition-colors" data-hover="true">Instagram</a>
-                <a href="#" className="hover:text-ox-red transition-colors" data-hover="true">Twitter</a>
-                <a href="#" className="hover:text-ox-red transition-colors" data-hover="true">Manifesto</a>
             </div>
         </div>
       </footer>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, Variants } from 'framer-motion';
 
 interface BinaryMarkProps {
@@ -38,12 +38,43 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
   const [hoverO, setHoverO] = useState(false);
   const [hoverX, setHoverX] = useState(false);
 
+  // Refs for proximity detection
+  const oRef = useRef<HTMLDivElement>(null);
+  const xRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Only apply proximity logic on touch devices (pointer: coarse)
+    const isTouch = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+
+    if (isTouch) {
+        // Proximity Threshold (px) - Generous area for "around that" feel
+        const threshold = 160; 
+
+        if (oRef.current) {
+            const rect = oRef.current.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const dist = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
+            setHoverO(dist < threshold);
+        }
+
+        if (xRef.current) {
+            const rect = xRef.current.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const dist = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
+            setHoverX(dist < threshold);
+        }
+    }
+  }, [mouseX, mouseY]);
+
   return (
     // Container uses responsive gap based on viewport width
     <div className="relative w-full max-w-[90vw] aspect-video flex items-center justify-center gap-[10vw] md:gap-[30vw] pointer-events-none select-none">
       
       {/* Left Wrapper: THE VOID [O] */}
       <motion.div 
+        ref={oRef}
         className="relative group pointer-events-auto"
         onHoverStart={() => setHoverO(true)}
         onHoverEnd={() => setHoverO(false)}
@@ -88,7 +119,7 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
         {/* Label for O */}
         <motion.div 
             animate={{ opacity: hoverO ? 0 : 1 }}
-            className="absolute -bottom-[5vmin] left-1/2 -translate-x-1/2 text-center mix-blend-difference pointer-events-none"
+            className="absolute -bottom-[10vmin] left-1/2 -translate-x-1/2 text-center mix-blend-difference pointer-events-none"
         >
              <span className="block font-mono text-[1.5vmin] tracking-[0.3em] text-white uppercase opacity-80 whitespace-nowrap">The Void</span>
              <span className="block font-mono text-[1.2vmin] text-ox-red mt-[0.5vmin] opacity-60">[ NULL ]</span>
@@ -97,6 +128,7 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
 
       {/* Right Wrapper: THE SYSTEM [X] */}
       <motion.div 
+        ref={xRef}
         className="relative group pointer-events-auto"
         onHoverStart={() => setHoverX(true)}
         onHoverEnd={() => setHoverX(false)}
@@ -142,7 +174,7 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
         {/* Label for X */}
         <motion.div 
             animate={{ opacity: hoverX ? 0 : 1 }}
-            className="absolute -bottom-[5vmin] left-1/2 -translate-x-1/2 text-center pointer-events-none"
+            className="absolute -bottom-[10vmin] left-1/2 -translate-x-1/2 text-center pointer-events-none"
         >
              <span className="block font-mono text-[1.5vmin] tracking-[0.3em] text-ox-black uppercase opacity-80 whitespace-nowrap">The System</span>
              <span className="block font-mono text-[1.2vmin] text-ox-red mt-[0.5vmin] opacity-60">[ EXE ]</span>
