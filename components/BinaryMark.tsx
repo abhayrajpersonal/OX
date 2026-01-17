@@ -88,7 +88,7 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
                 animate={hoverO ? "visible" : "hidden"}
             >
                 {/* Dynamic Font Size */}
-                <div className="text-[6vmin] font-black text-white tracking-tighter uppercase whitespace-nowrap flex overflow-hidden py-4">
+                <div className="text-[6vmin] font-black text-white tracking-tighter uppercase whitespace-nowrap flex py-4">
                     {"OFFLINE".split("").map((char, i) => (
                         <motion.span key={i} variants={charVariants}>
                             {char}
@@ -142,7 +142,7 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
                 initial="hidden"
                 animate={hoverX ? "visible" : "hidden"}
             >
-                 <div className="text-[6vmin] font-black text-ox-black tracking-tighter uppercase whitespace-nowrap flex overflow-hidden py-4">
+                 <div className="text-[6vmin] font-black text-ox-black tracking-tighter uppercase whitespace-nowrap flex py-4">
                     {"XPERIENCE".split("").map((char, i) => (
                         <motion.span key={i} variants={charVariants}>
                             {char}
