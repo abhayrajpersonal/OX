@@ -69,8 +69,8 @@ const App: React.FC = () => {
         {/* Horizontal Line at Center */}
         <div className="absolute inset-x-0 top-1/2 h-[1px] bg-ox-red opacity-50" />
 
-        {/* The Interactive Mark */}
-        <div className="relative z-10 transform scale-75 md:scale-100">
+        {/* The Interactive Mark - Removed hardcoded scaling to rely on component responsiveness */}
+        <div className="relative z-10 w-full flex justify-center">
              <BinaryMark mouseX={mousePos.x} mouseY={mousePos.y} />
         </div>
 

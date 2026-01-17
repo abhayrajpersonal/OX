@@ -9,13 +9,12 @@ export const Manifesto: React.FC = () => {
   });
 
   // Parallax effects
-  // Moving positive Y means moving down with the scroll, appearing 'slower' than normal scroll speed.
   const gridY = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const textY1 = useTransform(scrollYProgress, [0, 1], [0, 60]);
   const textY2 = useTransform(scrollYProgress, [0, 1], [0, 120]);
 
   return (
-    <section ref={containerRef} className="relative w-full py-24 px-6 md:px-12 bg-ox-black text-ox-white min-h-screen flex flex-col justify-center items-center overflow-hidden">
+    <section ref={containerRef} className="relative w-full py-24 px-[5vw] bg-ox-black text-ox-white min-h-screen flex flex-col justify-center items-center overflow-hidden">
       
       {/* Decorative Grid Background */}
       <motion.div 
@@ -27,7 +26,7 @@ export const Manifesto: React.FC = () => {
         }}
       />
 
-      <div className="max-w-4xl z-10 space-y-24">
+      <div className="max-w-7xl z-10 w-full flex flex-col gap-[15vh]">
         
         {/* Block 1 */}
         <motion.div style={{ y: textY1 }}>
@@ -38,14 +37,15 @@ export const Manifesto: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="flex flex-col md:flex-row gap-8 items-start"
             >
-              <div className="md:w-1/4 font-mono text-ox-red text-sm pt-2">
+              <div className="md:w-1/4 font-mono text-ox-red text-sm pt-4">
                 [ 01_DISCONNECT ]
               </div>
               <div className="md:w-3/4">
-                <h2 className="text-4xl md:text-7xl font-black uppercase leading-[0.85] tracking-tight mb-6">
+                {/* Fluid Typography: clamp(min, preferred, max) */}
+                <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-black uppercase leading-[0.9] tracking-tight mb-6">
                   Esc<span className="text-transparent hover:text-white transition-colors duration-300 stroke-text">ape</span> The <br/> Algorithm.
                 </h2>
-                <p className="text-lg md:text-xl font-mono opacity-60 leading-relaxed max-w-lg">
+                <p className="text-[clamp(1rem,1.5vw,1.25rem)] font-mono opacity-60 leading-relaxed max-w-xl">
                   We live in a world of constant noise. Signals. Notifications. The infinite scroll. OX is the anti-platform. A physical space to engage with the tangible.
                 </p>
               </div>
@@ -61,14 +61,14 @@ export const Manifesto: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="flex flex-col md:flex-row gap-8 items-start text-right md:flex-row-reverse"
             >
-              <div className="md:w-1/4 font-mono text-ox-red text-sm pt-2">
+              <div className="md:w-1/4 font-mono text-ox-red text-sm pt-4">
                 [ 02_THE_VOID ]
               </div>
               <div className="md:w-3/4 flex flex-col items-end">
-                <h2 className="text-4xl md:text-7xl font-black uppercase leading-[0.85] tracking-tight mb-6">
+                <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-black uppercase leading-[0.9] tracking-tight mb-6">
                   Ent<span className="text-transparent hover:text-white transition-colors duration-300 stroke-text">er</span> The <br/> Silence.
                 </h2>
-                <p className="text-lg md:text-xl font-mono opacity-60 leading-relaxed max-w-lg">
+                <p className="text-[clamp(1rem,1.5vw,1.25rem)] font-mono opacity-60 leading-relaxed max-w-xl">
                   State 0 is the void. It is the absence of digital clutter. It is where creativity breathes. Reclaim your attention span.
                 </p>
               </div>
@@ -81,7 +81,7 @@ export const Manifesto: React.FC = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="pt-24 flex justify-center"
+          className="pt-12 flex justify-center"
         >
             <motion.button 
                 data-hover="true"
