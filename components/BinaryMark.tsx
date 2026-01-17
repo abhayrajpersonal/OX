@@ -38,18 +38,6 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
   const [hoverO, setHoverO] = useState(false);
   const [hoverX, setHoverX] = useState(false);
 
-  const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 1000;
-  const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
-  
-  const xPct = (mouseX / windowWidth - 0.5) * 2;
-  const yPct = (mouseY / windowHeight - 0.5) * 2;
-  
-  const moveX_O = xPct * -15; 
-  const moveY_O = yPct * -15;
-
-  const moveX_X = xPct * 20;
-  const moveY_X = yPct * 20;
-
   return (
     // Container uses responsive gap based on viewport width
     <div className="relative w-full max-w-[90vw] aspect-video flex items-center justify-center gap-[10vw] md:gap-[30vw] pointer-events-none select-none">
@@ -57,14 +45,13 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
       {/* Left Wrapper: THE VOID [O] */}
       <motion.div 
         className="relative group pointer-events-auto"
-        style={{ x: moveX_O, y: moveY_O }}
         onHoverStart={() => setHoverO(true)}
         onHoverEnd={() => setHoverO(false)}
         onClick={() => setHoverO(!hoverO)}
         data-hover="true"
       >
         {/* Dynamic Size using vmin ensures it fits on mobile/desktop proportionally */}
-        <div className="w-[30vmin] h-[30vmin] max-w-[320px] max-h-[320px] flex items-center justify-center relative">
+        <div className="w-[30vmin] h-[30vmin] max-w-[320px] max-h-[320px] flex items-center justify-center relative overflow-visible">
             
             {/* The O Shape */}
             <motion.div 
@@ -87,8 +74,8 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
                 initial="hidden"
                 animate={hoverO ? "visible" : "hidden"}
             >
-                {/* Dynamic Font Size */}
-                <div className="text-[6vmin] font-black text-white tracking-tighter uppercase whitespace-nowrap flex py-4">
+                {/* Dynamic Font Size - Reduced to 5vmin for consistency */}
+                <div className="text-[5vmin] font-black text-white tracking-tighter uppercase whitespace-nowrap flex py-4">
                     {"OFFLINE".split("").map((char, i) => (
                         <motion.span key={i} variants={charVariants}>
                             {char}
@@ -111,13 +98,12 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
       {/* Right Wrapper: THE SYSTEM [X] */}
       <motion.div 
         className="relative group pointer-events-auto"
-        style={{ x: moveX_X, y: moveY_X }}
         onHoverStart={() => setHoverX(true)}
         onHoverEnd={() => setHoverX(false)}
         onClick={() => setHoverX(!hoverX)}
         data-hover="true"
       >
-         <div className="w-[30vmin] h-[30vmin] max-w-[320px] max-h-[320px] flex items-center justify-center relative">
+         <div className="w-[30vmin] h-[30vmin] max-w-[320px] max-h-[320px] flex items-center justify-center relative overflow-visible">
             {/* The X Shape */}
             <motion.div 
                 className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -142,7 +128,8 @@ export const BinaryMark: React.FC<BinaryMarkProps> = ({ mouseX, mouseY }) => {
                 initial="hidden"
                 animate={hoverX ? "visible" : "hidden"}
             >
-                 <div className="text-[6vmin] font-black text-ox-black tracking-tighter uppercase whitespace-nowrap flex py-4">
+                 {/* Dynamic Font Size - Reduced to 5vmin to prevent clipping */}
+                 <div className="text-[5vmin] font-black text-ox-black tracking-tighter uppercase whitespace-nowrap flex py-4">
                     {"XPERIENCE".split("").map((char, i) => (
                         <motion.span key={i} variants={charVariants}>
                             {char}
